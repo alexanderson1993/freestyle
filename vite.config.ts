@@ -3,6 +3,7 @@ import { cloudflareDevProxy } from "@react-router/dev/vite/cloudflare";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
+import { adapterContext } from "./app/adapterContext";
 
 export default defineConfig(({ isSsrBuild }) => ({
   build: {
@@ -15,7 +16,7 @@ export default defineConfig(({ isSsrBuild }) => ({
   plugins: [
     cloudflareDevProxy({
       getLoadContext({ context }) {
-        return { cloudflare: context.cloudflare };
+        return new Map([[adapterContext, context.cloudflare.env]]);
       },
     }),
     tailwindcss(),

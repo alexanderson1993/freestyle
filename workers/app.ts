@@ -1,4 +1,8 @@
-import { createRequestHandler } from "react-router";
+import {
+  createRequestHandler,
+  unstable_RouterContextProvider,
+} from "react-router";
+import { adapterContext } from "~/adapterContext";
 
 declare global {
   interface CloudflareEnvironment extends Env {}
@@ -21,8 +25,9 @@ const requestHandler = createRequestHandler(
 
 export default {
   fetch(request, env, ctx) {
-    return requestHandler(request, {
-      cloudflare: { env, ctx },
-    });
+    const contextProvider = new unstable_RouterContextProvider(
+      new Map([[adapterContext, env]])
+    );
+    return requestHandler(request, contextProvider);
   },
 } satisfies ExportedHandler<CloudflareEnvironment>;
