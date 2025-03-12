@@ -14,6 +14,8 @@ export class MyServer extends Server<Env> {
   }
   onMessage(connection: Connection<unknown>, message: string) {
     console.log("message from client:", message);
+
+    connection.send("Oh hello!");
   }
 }
 

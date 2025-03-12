@@ -2,6 +2,8 @@ import type { Route } from "./+types/home";
 import { Welcome } from "../welcome/welcome";
 import { adapterContext } from "~/adapterContext";
 import { getServerByName } from "partyserver";
+import { useWebSocket } from "partysocket/react";
+
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "New React Router App" },
@@ -20,5 +22,21 @@ export async function loader({ context }: Route.LoaderArgs) {
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
-  return <Welcome message={loaderData.message} />;
+  const socket = useWebSocket("/ws", [], {
+    onMessage(event) {
+      console.log(event.data);
+    },
+  });
+  return (
+    <div>
+      <Welcome message={loaderData.message} />
+      <button
+        className="bg-blue-500 text-white px-2 py-1 rounded"
+        type="button"
+        onClick={() => socket.send("Hello!")}
+      >
+        Send!
+      </button>
+    </div>
+  );
 }
