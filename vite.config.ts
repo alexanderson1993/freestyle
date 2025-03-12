@@ -1,9 +1,8 @@
+import { cloudflare } from "@cloudflare/vite-plugin";
 import { reactRouter } from "@react-router/dev/vite";
-import { cloudflareDevProxy } from "@react-router/dev/vite/cloudflare";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { adapterContext } from "./app/adapterContext";
 
 export default defineConfig(({ isSsrBuild }) => ({
   build: {
@@ -14,10 +13,8 @@ export default defineConfig(({ isSsrBuild }) => ({
       : undefined,
   },
   plugins: [
-    cloudflareDevProxy({
-      getLoadContext({ context }) {
-        return new Map([[adapterContext, context.cloudflare.env]]);
-      },
+    cloudflare({
+      viteEnvironment: { name: "ssr" }
     }),
     tailwindcss(),
     reactRouter(),
