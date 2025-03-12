@@ -1,11 +1,21 @@
-import { createRequestHandler, unstable_createContext, unstable_RouterContextProvider } from "react-router";
+import { createRequestHandler } from "react-router";
 
 // @ts-expect-error - no types
 import * as build from "virtual:react-router/server-build";
 
 import { adapterContext } from "./adapterContext";
+import { Server, type Connection } from "partyserver";
 
 const handler = createRequestHandler(build);
+
+export class MyServer extends Server<Env> {
+  onRequest(request: Request): Response | Promise<Response> {
+    return new Response("Hello there!");
+  }
+  onMessage(connection: Connection<unknown>, message: string) {
+    console.log("message from client:", message);
+  }
+}
 
 export default {
   fetch(request: Request, env: Env) {
@@ -16,5 +26,5 @@ export default {
       console.error(error);
       return new Response("Internal Server Error", { status: 500 });
     }
-  }
-}
+  },
+};

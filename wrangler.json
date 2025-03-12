@@ -1,0 +1,24 @@
+{
+  "$schema": "https://unpkg.com/wrangler@latest/config-schema.json",
+  "name": "thoriumsim",
+  "main": "./app/entry.worker.ts",
+  "compatibility_date": "2025-02-04",
+  "workers_dev": true,
+  "assets": {
+    "directory": "./build/client/"
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "MyServer",
+        "class_name": "MyServer"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_classes": ["MyServer"]
+    }
+  ]
+}
