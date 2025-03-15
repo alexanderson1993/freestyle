@@ -1,7 +1,15 @@
+import { useWebSocket } from "partysocket/react";
 import logoDark from "./logo-dark.svg";
 import logoLight from "./logo-light.svg";
+import { toastQueue } from "~/components/ui/toaster";
+import { Button } from "react-aria-components";
 
 export function Welcome({ message }: { message: string }) {
+  const socket = useWebSocket("/ws", [], {
+    onMessage(event) {
+      toastQueue.add({ title: event.data }, { timeout: 5000 });
+    },
+  });
   return (
     <main className="flex items-center justify-center pt-16 pb-4">
       <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
@@ -41,6 +49,13 @@ export function Welcome({ message }: { message: string }) {
               <li className="self-stretch p-3 leading-normal">{message}</li>
             </ul>
           </nav>
+          <Button
+            className="bg-blue-500 w-full text-white px-2 py-1 rounded"
+            type="button"
+            onPress={() => socket.send("Hello!")}
+          >
+            Send WebSocket Message
+          </Button>
         </div>
       </div>
     </main>
