@@ -2,6 +2,7 @@ import { getMigrations } from "better-auth/db";
 import type { BetterAuthOptions } from "better-auth";
 import { getAuth } from "~/utils/auth.server";
 import { stubDb } from "./stubDb";
+import { mkdir } from "node:fs/promises";
 
 export type SchemaGenerator = (opts: {
   file?: string;
@@ -14,6 +15,7 @@ export type SchemaGenerator = (opts: {
 }>;
 
 const generateMigrations: SchemaGenerator = async ({ options, file }) => {
+  await mkdir("./migrations", { recursive: true });
   const migrationNum =
     Array.from(new Bun.Glob("*.sql").scanSync("./migrations")).length + 1;
 
@@ -30,6 +32,7 @@ const generateMigrations: SchemaGenerator = async ({ options, file }) => {
 };
 
 const { code, fileName } = await generateMigrations({
+  // biome-ignore lint/suspicious/noExplicitAny:
   options: getAuth({} as any, stubDb).options,
 });
 if (!code) {

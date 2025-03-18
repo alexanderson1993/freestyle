@@ -1,9 +1,74 @@
 @import "tailwindcss";
 @plugin "tailwindcss-react-aria-components";
 
+:root {
+  --background: hsl(300 20% 99%);
+  --foreground: hsl(257 10% 14%);
+  --card: hsl(270 20% 98%);
+  --card-foreground: hsl(257 10% 14%);
+  --popover: hsl(270 20% 98%);
+  --popover-foreground: hsl(257 10% 14%);
+  --primary: hsl(252 56% 57%);
+  --primary-foreground: hsl(0 0% 93%);
+  --secondary: hsl(256 100% 95%);
+  --secondary-foreground: hsl(249 43% 26%);
+  --muted: hsl(274 12% 89%);
+  --muted-foreground: hsl(257 10% 14%);
+  --accent: hsl(285 14% 95%);
+  --accent-foreground: hsl(257 10% 14%);
+  --destructive: 0 84.2hsl (% 60.2%);
+  --destructive-foreground: hsl(0 0% 98%);
+  --border: hsl(258 11% 82%);
+  --input: hsl(258 11% 82%);
+  --ring: hsl(252 56% 57%);
+  --radius: 0.5rem;
+}
+
+.dark,
+:root[class~="dark"] {
+  --background: hsl(270 6% 7%);
+  --foreground: hsl(240 6% 94%);
+  --card: hsl(270 4% 10%);
+  --card-foreground: hsl(240 6% 94%);
+  --popover: hsl(270 4% 10%);
+  --popover-foreground: hsl(240 6% 94%);
+  --primary: hsl(252 56% 57%);
+  --primary-foreground: hsl(0 0% 93%);
+  --secondary: hsl(256 42% 25%);
+  --secondary-foreground: hsl(249 94% 93%);
+  --muted: hsl(264 5% 20%);
+  --muted-foreground: hsl(240 4.9% 76.1%);
+  --accent: hsl(260 4% 14%);
+  --accent-foreground: hsl(240 6% 94%);
+  --destructive: 0 84.2hsl (% 60.2%);
+  --destructive-foreground: hsl(0 0% 98%);
+  --border: hsl(257 5% 29%);
+  --input: hsl(257 5% 29%);
+  --ring: hsl(252 56% 57%);
+}
+
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive: 0);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 }
 
 html,

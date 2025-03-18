@@ -1,4 +1,5 @@
 import {
+  data,
   isRouteErrorResponse,
   Links,
   Meta,
@@ -10,7 +11,17 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 import { Toaster } from "~/components/ui/toaster";
+import { ClientHintCheck, getHints } from "~/utils/client-hints";
+import { getDomainUrl } from "~/utils/misc";
+import { getTheme } from "~/utils/theme.server";
+import { useOptionalTheme } from "~/routes/api/themeSwitcher";
+import { sessionMiddleware } from "~/utils/sessionMiddleware";
+import {
+  getTimingCollector,
+  serverTimingMiddleware,
+} from "remix-utils/middleware/server-timing";
 
+export const unstable_middleware = [serverTimingMiddleware, sessionMiddleware];
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
@@ -24,16 +35,35 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
+export async function loader({ request, context }: Route.LoaderArgs) {
+  const collector = getTimingCollector(context);
+  return await collector.measure("root", async () => {
+    return {
+      requestInfo: {
+        hints: getHints(request),
+        origin: getDomainUrl(request),
+        path: new URL(request.url).pathname,
+        userPrefs: {
+          theme: getTheme(request),
+        },
+      },
+    };
+  });
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
+  const theme = useOptionalTheme();
+
   return (
-    <html lang="en">
+    <html lang="en" className={`${theme}`}>
       <head>
+        <ClientHintCheck />
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="min-h-screen flex flex-col bg-background text-foreground">
         <Toaster />
         {children}
         <ScrollRestoration />

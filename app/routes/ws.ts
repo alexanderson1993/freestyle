@@ -7,5 +7,6 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     context.get(adapterContext).MyServer,
     "test"
   );
-  return stub.fetch(request);
+  const response = await stub.fetch(request);
+  return new Response(response.body, response);
 }
