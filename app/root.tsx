@@ -1,11 +1,13 @@
 import {
-  data,
+  useHref,
   isRouteErrorResponse,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  useNavigate,
+  type NavigateOptions,
 } from "react-router";
 
 import type { Route } from "./+types/root";
@@ -53,6 +55,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const theme = useOptionalTheme();
+  const navigate = useNavigate();
 
   return (
     <html lang="en" className={`${theme}`}>
