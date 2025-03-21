@@ -62,6 +62,7 @@ interface JollyCheckboxGroupProps extends AriaCheckboxGroupProps {
   label?: string;
   description?: string;
   errorMessage?: string | ((validation: AriaValidationResult) => string);
+  orientation?: "horizontal" | "vertical";
 }
 
 function JollyCheckboxGroup({
@@ -70,6 +71,7 @@ function JollyCheckboxGroup({
   errorMessage,
   className,
   children,
+  orientation = "vertical",
   ...props
 }: JollyCheckboxGroupProps) {
   return (
@@ -82,7 +84,13 @@ function JollyCheckboxGroup({
       {composeRenderProps(children, (children) => (
         <>
           <Label>{label}</Label>
-          {children}
+          <div
+            className={cn("flex flex-col flex-wrap gap-2", {
+              "flex-row": orientation === "horizontal",
+            })}
+          >
+            {children}
+          </div>
           {description && (
             <Text className="text-sm text-muted-foreground" slot="description">
               {description}

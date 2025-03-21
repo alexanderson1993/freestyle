@@ -13,7 +13,12 @@ export default [
       route("collections", "routes/cms/settings.tsx"),
     ]),
     route("collections", "routes/cms/collectionsSidebar.tsx", [
-      route(":collection", "routes/cms/collections.tsx"),
+      route("new", "routes/cms/collectionNew.tsx"),
+      route(":collection", "routes/cms/collections.tsx", [
+        index("routes/cms/collectionRecords.tsx"),
+        route("settings", "routes/cms/collectionSettings.tsx"),
+        route("new", "routes/cms/collectionRecordsNew.tsx"),
+      ]),
     ]),
   ]),
   ...prefix("/api", [
@@ -24,5 +29,4 @@ export default [
   route("/sign-in", "routes/sign-in.tsx"),
   route("/sign-up", "routes/sign-up.tsx"),
   route("/images/*", "routes/api/images.ts"),
-  route("/ws", "routes/ws.ts"),
 ] satisfies RouteConfig;

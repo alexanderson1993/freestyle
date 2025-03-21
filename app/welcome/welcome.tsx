@@ -13,11 +13,6 @@ export function Welcome({
   message: string;
   user: User | undefined;
 }) {
-  const socket = useWebSocket("/ws", [], {
-    onMessage(event) {
-      toastQueue.add({ title: event.data }, { timeout: 5000 });
-    },
-  });
   return (
     <main className="flex items-center justify-center pt-16 pb-4">
       <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
@@ -71,15 +66,6 @@ export function Welcome({
               </Link>
             </>
           )}
-
-          <Button
-            variant="default"
-            type="button"
-            className="w-full"
-            onPress={() => socket.send("Hello!")}
-          >
-            Send WebSocket Message
-          </Button>
         </div>
       </div>
     </main>

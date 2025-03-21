@@ -4,24 +4,12 @@ import { createCookieSessionStorage, createRequestHandler } from "react-router";
 import * as build from "virtual:react-router/server-build";
 
 import { adapterContext } from "./utils/adapterContext";
-import { Server, type Connection } from "partyserver";
 import { getDb } from "~/utils/db";
 import { getAuth } from "~/utils/auth.server";
 import type { User } from "~/utils/sessionMiddleware";
 import { R2FileStorage } from "@edgefirst-dev/r2-file-storage";
 
 const handler = createRequestHandler(build);
-
-export class MyServer extends Server<Env> {
-  onRequest(request: Request): Response | Promise<Response> {
-    return new Response("Hello from Durable Object!");
-  }
-  onMessage(connection: Connection<unknown>, message: string) {
-    console.log("message from client:", message);
-
-    connection.send("WS Message from Durable Object!");
-  }
-}
 
 export default {
   fetch(request: Request, env: Env) {

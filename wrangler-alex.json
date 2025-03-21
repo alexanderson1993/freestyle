@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/wrangler@latest/config-schema.json",
-  "name": "freestyle",
+  "name": "thoriumsim",
   "main": "./app/entry.worker.ts",
   "compatibility_date": "2025-02-04",
   "compatibility_flags": ["nodejs_compat"],
@@ -12,13 +12,13 @@
     {
       "binding": "DB",
       "database_name": "freestyle",
-      "database_id": "a025a428-b66d-42e2-a600-7a0d41a3e47b"
+      "database_id": "7ee22c6b-51e9-43d0-8cd0-13cec38a00bb"
     }
   ],
   "kv_namespaces": [
     {
       "binding": "KV",
-      "id": "0daffa27ee0f44248631c6f424694f81"
+      "id": "31d732739af14a39ace310fc19ab7239"
     }
   ],
   "r2_buckets": [

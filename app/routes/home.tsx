@@ -1,7 +1,5 @@
 import type { Route } from "./+types/home";
 import { Welcome } from "../welcome/welcome";
-import { adapterContext } from "~/utils/adapterContext";
-import { getServerByName } from "partyserver";
 import { getSession, sessionMiddleware } from "~/utils/sessionMiddleware";
 
 export const unstable_middleware = [sessionMiddleware];
@@ -15,12 +13,7 @@ export function meta() {
 
 export async function loader({ context }: Route.LoaderArgs) {
   const user = getSession(context, "user").get("user");
-  const DO = context.get(adapterContext).MyServer;
-  const message = await (
-    await (
-      await getServerByName(DO, "test")
-    ).fetch(new URL("/", "https://example.com"))
-  ).text();
+  const message = "Hi there!";
   return { message, user };
 }
 
