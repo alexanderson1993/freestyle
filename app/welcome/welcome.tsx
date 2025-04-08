@@ -1,10 +1,8 @@
-import { useWebSocket } from "partysocket/react";
 import logoDark from "./logo-dark.svg";
 import logoLight from "./logo-light.svg";
-import { toastQueue } from "~/components/ui/toaster";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { Form, href, Link } from "react-router";
-import type { User } from "~/utils/sessionMiddleware";
+import type { User } from "~/utils/auth.server";
 
 export function Welcome({
   message,
@@ -33,7 +31,7 @@ export function Welcome({
         <div className="max-w-[300px] w-full space-y-6 px-4">
           {user ? (
             <>
-              <p>Signed in as {user.name}</p>
+              <p>Signed in as {user.name || user.email}</p>
               {user.image ? (
                 <img src={user.image} alt="User" className="size-16" />
               ) : null}

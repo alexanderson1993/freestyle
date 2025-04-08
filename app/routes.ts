@@ -12,6 +12,13 @@ export default [
     route("settings", "routes/cms/settingsSidebar.tsx", [
       route("collections", "routes/cms/settings.tsx"),
     ]),
+    route("profile", "routes/cms/profile-redirect.tsx", {
+      id: "profile-redirect",
+    }),
+    route("users", "routes/cms/usersLayout.tsx", [
+      route("profile", "routes/cms/profile-redirect.tsx"),
+      route(":userId", "routes/cms/user.tsx"),
+    ]),
     route("collections", "routes/cms/collectionsSidebar.tsx", [
       route("new", "routes/cms/collectionNew.tsx"),
       route(":collection", "routes/cms/collections.tsx", [
@@ -22,7 +29,6 @@ export default [
     ]),
   ]),
   ...prefix("/api", [
-    route("/auth/*", "routes/api/auth.ts"),
     route("/theme-switch", "routes/api/themeSwitcher.tsx"),
     route("/logout", "routes/api/logout.ts"),
   ]),

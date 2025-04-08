@@ -10,7 +10,6 @@
     "typecheck": "react-router typegen && tsc -b",
     "types": "wrangler types",
     "sly": "bunx @sly-cli/sly add",
-    "db:migrate:auth": "bun run scripts/migrate.ts",
     "db:migrate:create": "wrangler d1 migrations create freestyle",
     "db:migrate": "wrangler d1 migrations apply freestyle",
     "db:generate": "bunx --bun kysely-codegen --url $(find ./.wrangler/state/v3/d1/miniflare-D1DatabaseObject -name \"*.sqlite\" | head -n 1) --dialect kysely-bun-sqlite"
@@ -25,7 +24,6 @@
     "@epic-web/invariant": "^1.0.0",
     "@internationalized/date": "^3.7.0",
     "@mjackson/form-data-parser": "^0.7.0",
-    "better-auth": "^1.2.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "immer": "^10.1.1",
@@ -38,6 +36,9 @@
     "react-aria-components": "^1.7.1",
     "react-dom": "^19.0.0",
     "react-router": "^7.4.0",
+    "remix-auth": "^4.1.0",
+    "remix-auth-form": "^3.0.0",
+    "remix-auth-webauthn": "^0.5.0",
     "remix-utils": "^8.5.0",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-react-aria-components": "^2.0.0",
@@ -59,6 +60,6 @@
     "vite": "^6.2.2",
     "vite-plugin-icons-spritesheet": "^3.0.1",
     "vite-tsconfig-paths": "^5.1.4",
-    "wrangler": "^4.3.0"
+    "wrangler": "^4.8.0"
   }
 }

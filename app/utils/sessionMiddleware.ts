@@ -6,13 +6,8 @@ import {
   type unstable_MiddlewareFunction,
 } from "react-router";
 import { adapterContext } from "~/utils/adapterContext";
+import type { User } from "~/utils/auth.server";
 
-export interface User {
-  id: string;
-  email: string;
-  name: string;
-  image: string | null | undefined;
-}
 interface SessionData {
   user: { user: User };
 }

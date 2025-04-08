@@ -8,49 +8,74 @@ import {
 } from "~/components/ui/card";
 import { Input } from "~/components/ui/textfield";
 import { Label } from "~/components/ui/field";
-import { Checkbox } from "~/components/ui/checkbox";
-import { authClient } from "~/utils/auth.client";
-import { Form, href, Link, redirect, useNavigation } from "react-router";
+import { data, Form, href, Link, redirect, useNavigation } from "react-router";
 import { Icon } from "~/components/ui/icon";
 import type { Route } from ".react-router/types/app/routes/+types/sign-in";
 import { adapterContext } from "~/utils/adapterContext";
-import z from "zod";
 import { parseWithZod } from "@conform-to/zod";
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { getSession } from "~/utils/sessionMiddleware";
+import { signinSchema } from "~/utils/schemas";
+import { handleFormSubmit } from "remix-auth-webauthn/browser";
+import type { WebAuthnStrategy } from "remix-auth-webauthn";
+import type { User } from "~/utils/auth.server";
 
-const schema = z.object({
-  email: z.string().email({ message: "Please use a valid email address." }),
-  password: z.string(),
-  remember: z.boolean().optional(),
-});
+export async function loader({ context, request, params }: Route.LoaderArgs) {
+  const env = context.get(adapterContext);
+
+  const strategy = env.auth.get("passkey") as WebAuthnStrategy<User>;
+  const challengeSession = await strategy.sessionStorage.getSession(
+    request.headers.get("Cookie")
+  );
+  const options = await strategy.generateOptions(request, null);
+  challengeSession.set("challenge", options.challenge);
+
+  return data(
+    { options },
+    {
+      headers: {
+        "Set-Cookie": await strategy.sessionStorage.commitSession(
+          challengeSession
+        ),
+      },
+    }
+  );
+}
 
 export async function action({ context, request }: Route.ActionArgs) {
   const env = context.get(adapterContext);
-  const formData = await request.formData();
-  const submission = parseWithZod(formData, { schema });
 
-  if (submission.status === "success") {
-    try {
-      const result = await env.auth.api.signInEmail({
-        body: submission.value,
-        asResponse: false,
-      });
-      const session = getSession(context, "user");
-      session.set("user", result.user);
-    } catch (error) {
-      if (error instanceof Error) {
-        return submission.reply({ formErrors: [error.message] });
-      }
-      return submission.reply({ formErrors: ["Error signing in."] });
+  try {
+    const session = getSession(context, "user");
+    const formData = await request.clone().formData();
+    const type = formData.get("type");
+    if (type === "authentication") {
+      const result = await env.auth.authenticate("passkey", request);
+      session.set("user", result);
+      throw redirect("/");
     }
+    const result = await env.auth.authenticate("form-signin", request);
+    session.set("user", result);
     throw redirect("/");
+  } catch (error) {
+    if (error instanceof Error) {
+      return {
+        status: "error",
+        intent: undefined,
+        initialValue: {},
+        error: { "": [error.message] },
+        state: undefined,
+        fields: ["type", "response"],
+      };
+    }
+    return error;
   }
-
-  return submission.reply();
 }
 
-export default function SignIn({ actionData }: Route.ComponentProps) {
+export default function SignIn({
+  actionData,
+  loaderData: { options },
+}: Route.ComponentProps) {
   const navigation = useNavigation();
   const [form, fields] = useForm({
     // Sync the result of last submission
@@ -60,7 +85,7 @@ export default function SignIn({ actionData }: Route.ComponentProps) {
     shouldValidate: "onSubmit",
     shouldRevalidate: "onInput",
     onValidate({ formData }) {
-      return parseWithZod(formData, { schema });
+      return parseWithZod(formData, { schema: signinSchema });
     },
   });
 
@@ -103,17 +128,6 @@ export default function SignIn({ actionData }: Route.ComponentProps) {
             <p className="text-red-500">{fields.password.errors}</p>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Checkbox
-              {...getInputProps(fields.remember, { type: "checkbox" })}
-            />
-            <Label htmlFor={fields.remember.id}>Remember me</Label>
-            <Link href="#" className="ml-auto inline-block text-sm underline">
-              Forgot your password?
-            </Link>
-          </div>
-          <p className="text-red-500">{fields.remember.errors}</p>
-
           <div>
             <p className="text-red-500">{form.errors}</p>
           </div>
@@ -125,17 +139,22 @@ export default function SignIn({ actionData }: Route.ComponentProps) {
               "Login"
             )}
           </Button>
-
-          {/* <Button
+        </Form>
+        <Form
+          method="POST"
+          className="mt-2"
+          onSubmit={handleFormSubmit(options)}
+        >
+          <Button
             variant="secondary"
-            className="gap-2"
-            onPress={async () => {
-              await authClient.signIn.passkey();
-            }}
+            className="gap-2 w-full"
+            type="submit"
+            name="intent"
+            value="authentication"
           >
             <Icon name="Key" className="size-4" />
             Sign-in with Passkey
-          </Button> */}
+          </Button>
         </Form>
         <p className="text-sm mt-4">
           New here?{" "}
