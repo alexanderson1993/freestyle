@@ -221,7 +221,6 @@ export default function EditUser({
     },
   });
 
-  console.log(form.allErrors);
   return (
     <div className="px-6">
       <h1 className="text-4xl font-medium">User Profile</h1>

@@ -54,7 +54,6 @@ function FieldError({ className, children, ...props }: AriaFieldErrorProps) {
   if (!body) {
     return null;
   }
-  console.log(formMessageId, body);
   return (
     <AriaFieldError
       id={formMessageId}
