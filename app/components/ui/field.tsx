@@ -12,6 +12,7 @@ import {
   type TextProps as AriaTextProps,
   composeRenderProps,
 } from "react-aria-components";
+import { useFormField } from "~/components/ui/form";
 
 import { cn } from "~/utils/cn";
 
@@ -23,13 +24,22 @@ const labelVariants = cva([
   "group-data-[invalid]:text-destructive",
 ]);
 
-const Label = ({ className, ...props }: AriaLabelProps) => (
-  <AriaLabel className={cn(labelVariants(), className)} {...props} />
-);
+const Label = ({ className, ...props }: AriaLabelProps) => {
+  const { formItemId } = useFormField();
+  return (
+    <AriaLabel
+      className={cn(labelVariants(), className)}
+      htmlFor={formItemId}
+      {...props}
+    />
+  );
+};
 
 function FormDescription({ className, ...props }: AriaTextProps) {
+  const { formDescriptionId } = useFormField();
   return (
     <AriaText
+      id={formDescriptionId}
       className={cn("text-sm text-muted-foreground", className)}
       {...props}
       slot="description"
@@ -37,12 +47,22 @@ function FormDescription({ className, ...props }: AriaTextProps) {
   );
 }
 
-function FieldError({ className, ...props }: AriaFieldErrorProps) {
+function FieldError({ className, children, ...props }: AriaFieldErrorProps) {
+  const { error, formMessageId } = useFormField();
+  const body = error ? String(error ?? "") : children;
+
+  if (!body) {
+    return null;
+  }
+  console.log(formMessageId, body);
   return (
     <AriaFieldError
+      id={formMessageId}
       className={cn("text-sm font-medium text-destructive", className)}
       {...props}
-    />
+    >
+      {body}
+    </AriaFieldError>
   );
 }
 

@@ -14,10 +14,27 @@ import {
 import { cn } from "~/utils/cn";
 
 import { FieldError, Label } from "./field";
+import { FormFieldContext, useFormField } from "~/components/ui/form";
 
-const TextField = AriaTextField;
+const TextField = (props: AriaTextFieldProps & { name: string }) => (
+  <FormFieldContext value={{ name: props.name }}>
+    <TextFieldWrapper {...props} />
+  </FormFieldContext>
+);
+const TextFieldWrapper = (props: AriaTextFieldProps) => {
+  const { error } = useFormField();
+  return (
+    <AriaTextField
+      {...props}
+      isInvalid={!!error}
+      className={cn("group", props.className)}
+    />
+  );
+};
 
 const Input = ({ className, ...props }: AriaInputProps) => {
+  const { error, formItemId, formDescriptionId, formMessageId } =
+    useFormField();
   return (
     <AriaInput
       className={composeRenderProps(className, (className) =>
@@ -32,6 +49,13 @@ const Input = ({ className, ...props }: AriaInputProps) => {
           className
         )
       )}
+      id={formItemId}
+      aria-describedby={
+        !error
+          ? `${formDescriptionId}`
+          : `${formDescriptionId} ${formMessageId}`
+      }
+      aria-invalid={!!error}
       {...props}
     />
   );
@@ -58,6 +82,7 @@ const TextArea = ({ className, ...props }: AriaTextAreaProps) => {
 };
 
 interface JollyTextFieldProps extends AriaTextFieldProps {
+  name: string;
   label?: string;
   description?: string;
   errorMessage?: string | ((validation: AriaValidationResult) => string);

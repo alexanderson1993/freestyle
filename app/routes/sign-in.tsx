@@ -8,7 +8,14 @@ import {
 } from "~/components/ui/card";
 import { Input } from "~/components/ui/textfield";
 import { Label } from "~/components/ui/field";
-import { data, Form, href, Link, redirect, useNavigation } from "react-router";
+import {
+  data,
+  Form as RRForm,
+  href,
+  Link,
+  redirect,
+  useNavigation,
+} from "react-router";
 import { Icon } from "~/components/ui/icon";
 import type { Route } from ".react-router/types/app/routes/+types/sign-in";
 import { adapterContext } from "~/utils/adapterContext";
@@ -19,6 +26,7 @@ import { signinSchema } from "~/utils/schemas";
 import { handleFormSubmit } from "remix-auth-webauthn/browser";
 import type { WebAuthnStrategy } from "remix-auth-webauthn";
 import type { User } from "~/utils/auth.server";
+import { Form } from "~/components/ui/form";
 
 export async function loader({ context, request, params }: Route.LoaderArgs) {
   const env = context.get(adapterContext);
@@ -100,6 +108,7 @@ export default function SignIn({
       </CardHeader>
       <CardContent>
         <Form
+          context={form.context}
           method="POST"
           encType="multipart/form-data"
           className="grid gap-4"
@@ -140,7 +149,7 @@ export default function SignIn({
             )}
           </Button>
         </Form>
-        <Form
+        <RRForm
           method="POST"
           className="mt-2"
           onSubmit={handleFormSubmit(options)}
@@ -155,7 +164,7 @@ export default function SignIn({
             <Icon name="Key" className="size-4" />
             Sign-in with Passkey
           </Button>
-        </Form>
+        </RRForm>
         <p className="text-sm mt-4">
           New here?{" "}
           <Link
