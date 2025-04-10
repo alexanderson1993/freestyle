@@ -22,9 +22,10 @@ export default [
     route("collections", "routes/cms/collectionsSidebar.tsx", [
       route("new", "routes/cms/collectionNew.tsx"),
       route(":collection", "routes/cms/collections.tsx", [
-        index("routes/cms/collectionRecords.tsx"),
+        index("routes/cms/records.tsx"),
         route("settings", "routes/cms/collectionSettings.tsx"),
-        route("new", "routes/cms/collectionRecordsNew.tsx"),
+        route("new", "routes/cms/recordsNew.tsx"),
+        route(":recordId", "routes/cms/recordDetails.tsx"),
       ]),
     ]),
   ]),

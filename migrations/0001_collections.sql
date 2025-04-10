@@ -5,6 +5,7 @@ create table "freestyle_collection"
     "singleton" integer not null,
     "hidden" integer not null,
     "note" text,
+    "display_template" text,
     "archive_field" text references "freestyle_field" ("name"),
     "archive_value" text,
     "unarchive_value" text
@@ -15,7 +16,6 @@ create table "freestyle_field"
     "name" text not null primary key,
     "collection" text not null references "freestyle_collection" ("name"),
     "field" text not null,
-    "special" text,
     "interface" text,
     "options" JSON,
     "note" text,

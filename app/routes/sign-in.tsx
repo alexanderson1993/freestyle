@@ -96,7 +96,6 @@ export default function SignIn({
       return parseWithZod(formData, { schema: signinSchema });
     },
   });
-
   const loading = navigation.state !== "idle";
   return (
     <Card className="max-w-full w-md self-center mt-24 lg:mt-48">

@@ -1,6 +1,7 @@
 import type { Route } from ".react-router/types/app/routes/cms/+types/collections";
 import {
   href,
+  isRouteErrorResponse,
   Link,
   Outlet,
   useLocation,
@@ -48,10 +49,10 @@ export default function Collections({
               "breadcrumb" in match.handle &&
               typeof match.handle.breadcrumb === "function"
             ) {
-              const { label, path } = match.handle.breadcrumb(collection);
+              const { label, path } = match.handle.breadcrumb(match);
               if (!label) return null;
               return (
-                <BreadcrumbItem>
+                <BreadcrumbItem key={label}>
                   {path ? (
                     <BreadcrumbLink to={path}>{label}</BreadcrumbLink>
                   ) : (

@@ -45,7 +45,6 @@ const fieldSchema = z.object({
   id: z.string(),
   name: z.string(),
   field: z.string(),
-  special: z.string().optional(),
   interface: z.string().optional(),
   options: z.record(z.string()).optional(),
   note: z.string().optional(),
@@ -98,7 +97,7 @@ const directusFields = [
   "slider",
 ];
 
-const fieldTypes = [
+export const fieldTypes = [
   {
     icon: "Type",
     label: "Plain Text",
@@ -189,10 +188,10 @@ const fieldTypes = [
           <Switch name={`${fieldPath}.hidden`} className="flex-auto">
             Hidden
           </Switch>
-          <Switch name={`${fieldPath}.nonZero`} className="flex-auto">
-            Non-Zero
+          <Switch name={`${fieldPath}.required`} className="flex-auto">
+            Required
           </Switch>
-          <Switch name={`${fieldPath}.integer`} className="flex-auto">
+          <Switch name={`${fieldPath}.options.integer`} className="flex-auto">
             Integer
           </Switch>
         </div>
@@ -248,6 +247,7 @@ const fieldTypes = [
       </div>
     ),
   },
+  // TODO
   {
     icon: "List",
     name: "select",
@@ -366,7 +366,6 @@ export async function action({ request, context }: Route.ActionArgs) {
           required: field.required ? 1 : 0,
           note: field.note,
           options: JSON.stringify(field.options),
-          special: field.special,
           interface: field.interface,
           sort: i,
         }))
@@ -517,6 +516,18 @@ export default function NewCollection({ actionData }: Route.ComponentProps) {
       </div>
     </div>
   );
+}
+
+export function IconForFieldType({
+  type,
+  ...props
+}: React.SVGProps<SVGSVGElement> & {
+  type: string;
+}) {
+  const fieldType = fieldTypes.find((t) => t.name === type);
+  if (!fieldType) return null;
+
+  return <Icon {...props} name={fieldType?.icon} />;
 }
 
 function FieldDisclosureHeader({ children, className }: DisclosureHeaderProps) {
