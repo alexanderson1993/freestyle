@@ -285,13 +285,15 @@ export default function EditUser({
           <div key={a.id} className="flex items-center gap-2">
             <img
               src={
-                theme === "dark" ? a.provider.icon_dark : a.provider.icon_light
+                theme === "dark"
+                  ? a.provider?.icon_dark
+                  : a.provider?.icon_light
               }
               className="size-8"
-              alt={a.provider.name}
+              alt={a.provider?.name}
             />
             <div>
-              <div>{a.provider.name}</div>
+              <div>{a.provider?.name || "Unknown"}</div>
               <small>Added on {a.createdAt.toLocaleDateString()}</small>
             </div>
           </div>

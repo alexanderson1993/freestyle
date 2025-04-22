@@ -1,4 +1,4 @@
-import * as React from "react";
+import type * as React from "react";
 import {
   Input as AriaInput,
   type InputProps as AriaInputProps,
@@ -32,7 +32,10 @@ const TextFieldWrapper = (props: AriaTextFieldProps) => {
   );
 };
 
-const Input = ({ className, ...props }: AriaInputProps) => {
+const Input = ({
+  className,
+  ...props
+}: AriaInputProps & { ref?: React.Ref<HTMLInputElement> }) => {
   const { error, formItemId, formDescriptionId, formMessageId } =
     useFormField();
   return (
@@ -62,6 +65,8 @@ const Input = ({ className, ...props }: AriaInputProps) => {
 };
 
 const TextArea = ({ className, ...props }: AriaTextAreaProps) => {
+  const { error, formItemId, formDescriptionId, formMessageId } =
+    useFormField();
   return (
     <AriaTextArea
       className={composeRenderProps(className, (className) =>
@@ -76,6 +81,13 @@ const TextArea = ({ className, ...props }: AriaTextAreaProps) => {
           className
         )
       )}
+      id={formItemId}
+      aria-describedby={
+        !error
+          ? `${formDescriptionId}`
+          : `${formDescriptionId} ${formMessageId}`
+      }
+      aria-invalid={!!error}
       {...props}
     />
   );

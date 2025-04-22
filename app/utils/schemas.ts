@@ -38,6 +38,26 @@ export const profileUpdateSchema = z
     }
   );
 
+export const fieldSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  field: z.string(),
+  interface: z.string().nullish(),
+  options: z.record(z.string()).nullish(),
+  note: z.string().nullish(),
+  required: z.coerce.boolean(),
+  hidden: z.coerce.boolean(),
+});
+
+export const collectionSchema = z.object({
+  name: z.string(),
+  note: z.string().nullish(),
+  display_template: z.string().nullish(),
+  hidden: z.coerce.boolean(),
+  singleton: z.coerce.boolean(),
+  fields: z.array(fieldSchema),
+});
+
 type Field = Pick<
   DB["freestyle_field"],
   "field" | "interface" | "name" | "note" | "required"
@@ -53,10 +73,10 @@ export function fieldsToZod(fields: Field[]) {
           case "string": {
             type = z.string();
             if (options.minLength) {
-              type = type.minLength(Number(options.minLength));
+              type = type.min(Number(options.minLength));
             }
             if (options.maxLength) {
-              type = type.maxLength(Number(options.maxLength));
+              type = type.max(Number(options.maxLength));
             }
             if (
               options.validationPattern &&

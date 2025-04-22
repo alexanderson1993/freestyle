@@ -56,7 +56,6 @@ export async function loader({ params, context, request }: Route.LoaderArgs) {
     .limit(PAGE_LIMIT);
 
   if (sort) {
-    console.log(sort);
     recordsQuery = recordsQuery.orderBy(
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       sort.replace("-", "") as any,

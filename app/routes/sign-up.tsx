@@ -6,9 +6,8 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { useRef, useState } from "react";
 import { Icon } from "~/components/ui/icon";
-import { Form, href, Link, redirect, useNavigation } from "react-router";
+import { href, Link, redirect, useNavigation } from "react-router";
 import type { Route } from ".react-router/types/app/routes/+types/sign-up";
 import { Input } from "~/components/ui/textfield";
 import { Label } from "~/components/ui/field";
@@ -18,6 +17,7 @@ import { adapterContext } from "~/utils/adapterContext";
 import { getSession } from "~/utils/sessionMiddleware";
 import { signUpSchema } from "~/utils/schemas";
 import { getTimingCollector } from "remix-utils/middleware/server-timing";
+import { Form } from "~/components/ui/form";
 
 export async function action({ context, request }: Route.ActionArgs) {
   const env = context.get(adapterContext);
@@ -61,6 +61,7 @@ export default function SignUp({ actionData }: Route.ComponentProps) {
       </CardHeader>
       <CardContent>
         <Form
+          context={form.context}
           method="POST"
           encType="multipart/form-data"
           className="grid gap-4"

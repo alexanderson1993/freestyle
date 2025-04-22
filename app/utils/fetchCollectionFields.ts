@@ -13,6 +13,7 @@ export async function fetchCollectionFields(
       "freestyle_field.note",
       "freestyle_field.options",
       "freestyle_field.required",
+      "freestyle_field.hidden",
     ])
     .where("collection", "==", collection)
     .where("name", "!=", "id")

@@ -85,12 +85,12 @@ export default function Collections({
           />
         </Button>
         <div className="flex-auto" />
-        {pathname.endsWith("/new") ? null : (
+        {pathname.endsWith(`/${collection}`) ? (
           <Link className={buttonVariants({})} to="new">
             <Icon name="Plus" className="size-4 mr-2" />
             New Record
           </Link>
-        )}
+        ) : null}
       </div>
       <Outlet />
     </div>

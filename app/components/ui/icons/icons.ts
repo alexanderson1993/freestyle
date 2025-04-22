@@ -21,6 +21,7 @@ export const iconNames = [
   "List",
   "Laptop",
   "Key",
+  "IdCard",
   "Hash",
   "GitBranch",
   "FileImage",

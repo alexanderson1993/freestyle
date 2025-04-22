@@ -29,7 +29,7 @@ function Disclosure({ children, className, ...props }: DisclosureProps) {
       className={composeRenderProps(className, (className, renderProps) =>
         cn(
           "group min-w-64",
-          isInGroup && "border-0 border-b last:border-b-0",
+          isInGroup && "border-0  last:border-b border-b-0",
           className
         )
       )}

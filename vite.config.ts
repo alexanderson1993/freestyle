@@ -4,6 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { iconsSpritesheet } from "vite-plugin-icons-spritesheet";
+import babel from "vite-plugin-babel";
 
 export default defineConfig(({ isSsrBuild }) => ({
   build: {
@@ -14,6 +15,14 @@ export default defineConfig(({ isSsrBuild }) => ({
       : undefined,
   },
   plugins: [
+    babel({
+      include: ["./app/**/*"],
+      filter: (name) => name.endsWith("tsx"),
+      babelConfig: {
+        presets: ["@babel/preset-typescript"],
+        plugins: ["babel-plugin-react-compiler"],
+      },
+    }),
     cloudflare({
       viteEnvironment: { name: "ssr" },
     }),

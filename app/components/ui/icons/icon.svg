@@ -100,6 +100,13 @@
   <path d="m21 2-9.6 9.6" ></path>
   <circle cx="7.5" cy="15.5" r="5.5" ></circle>
 </symbol>
+<symbol viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="IdCard">
+  <path d="M16 10h2" ></path>
+  <path d="M16 14h2" ></path>
+  <path d="M6.17 15a3 3 0 0 1 5.66 0" ></path>
+  <circle cx="9" cy="11" r="2" ></circle>
+  <rect x="2" y="5" width="20" height="14" rx="2" ></rect>
+</symbol>
 <symbol viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="Hash">
   <line x1="4" x2="20" y1="9" y2="9" ></line>
   <line x1="4" x2="20" y1="15" y2="15" ></line>
